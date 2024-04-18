@@ -49,36 +49,25 @@ class _MyHomePageState extends State<MyHomePage> {
                       final founder = teamInfo['founder'];
                       final founded = teamInfo['founded'].toString();
                       final links = teamInfo['links'];
+                      const TextStyle listTileStyle = TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.black87);
                       return Center(
                         child: Column(
                           children: [
                             ListTile(
-                              title: Text('Name : $name'),
-                              titleTextStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black87),
-                            ),
+                                title: Text('Name : $name'),
+                                titleTextStyle: listTileStyle),
                             ListTile(
-                              title: Text('Founder : $founder'),
-                              titleTextStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black87),
-                            ),
+                                title: Text('Founder : $founder'),
+                                titleTextStyle: listTileStyle),
                             ListTile(
-                              title: Text(' Founded : $founded'),
-                              titleTextStyle: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black87),
-                            ),
+                                title: Text(' Founded : $founded'),
+                                titleTextStyle: listTileStyle),
                             const ListTile(
                               title: Text(' Links :'),
-                              titleTextStyle: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.black87),
+                              titleTextStyle: listTileStyle,
                             ),
                             ...links.entries.map((link) {
                               return ListTile(
@@ -90,8 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                     if (await canLaunchUrl(url)) {
                                       await launchUrl(url);
                                     } else {
-                                      // throw 'Could Not launch $url';
-                                      print('$url');
+                                      throw 'Could Not launch $url';
                                     }
                                   },
                                 ),
