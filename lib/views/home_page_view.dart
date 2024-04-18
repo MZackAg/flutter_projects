@@ -90,7 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     if (await canLaunchUrl(url)) {
                                       await launchUrl(url);
                                     } else {
-                                      throw 'Could Not launch $url';
+                                      // throw 'Could Not launch $url';
+                                      print('$url');
                                     }
                                   },
                                 ),
