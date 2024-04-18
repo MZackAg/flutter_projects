@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
               backgroundColor: const Color.fromARGB(255, 225, 226, 255),
               textStyle: const TextStyle(fontSize: 18.0),
             ),
-            child: const Text('Go!'),
+            child: const Text('Launch List!'),
           )
         ],
       ),
