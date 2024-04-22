@@ -1,31 +1,31 @@
-// import 'dart:convert';
-import 'dart:async';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/constants/routes.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter_projects/http_requests/get_company_info.dart';
+import 'package:flutter_projects/models/company_info.dart';
+import 'package:flutter_projects/style/company_info_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
   List<dynamic> infos = [];
+  final bool isOnLoadingState = false;
   @override
   void initState() {
     super.initState();
-    getCompanyInfo();
+    fetchCompanyInfo();
   }
 
-  Future getCompanyInfo() async {
-    final response =
-        await http.get(Uri.https('api.spacexdata.com', 'v4/company'));
-    final jsonData = jsonDecode(response.body);
+  void fetchCompanyInfo() async {
+    CompanyService companyService = CompanyService();
+    var jsonData = await companyService.getCompanyInfo();
     setState(() {
-      infos = [jsonData];
+      infos = jsonData;
     });
   }
 
@@ -40,58 +40,53 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         children: [
           Expanded(
-            child: infos.isNotEmpty
-                ? ListView.builder(
-                    itemCount: infos.length,
-                    itemBuilder: (context, index) {
-                      final teamInfo = infos[index];
-                      final name = teamInfo['name'];
-                      final founder = teamInfo['founder'];
-                      final founded = teamInfo['founded'].toString();
-                      final links = teamInfo['links'];
-                      const TextStyle listTileStyle = TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black87);
-                      return Center(
-                        child: Column(
-                          children: [
-                            ListTile(
-                                title: Text('Name : $name'),
-                                titleTextStyle: listTileStyle),
-                            ListTile(
-                                title: Text('Founder : $founder'),
-                                titleTextStyle: listTileStyle),
-                            ListTile(
-                                title: Text(' Founded : $founded'),
-                                titleTextStyle: listTileStyle),
-                            const ListTile(
-                              title: Text(' Links :'),
-                              titleTextStyle: listTileStyle,
-                            ),
-                            ...links.entries.map((link) {
-                              return ListTile(
-                                title: Text(link.key),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.link),
-                                  onPressed: () async {
-                                    final url = Uri.parse(link.value);
-                                    if (await canLaunchUrl(url)) {
-                                      await launchUrl(url);
-                                    } else {
-                                      throw 'Could Not launch $url';
-                                    }
-                                  },
-                                ),
-                              );
-                            }).toList()
-                          ],
-                        ),
-                      );
-                    },
-                  )
-                : const Center(child: CircularProgressIndicator()),
-          ),
+              child: isOnLoadingState
+                  ? const Center(child: CircularProgressIndicator())
+                  : infos.isEmpty
+                      ? const Center(child: Text('THERE IS NO DATA!!'))
+                      : ListView.builder(
+                          itemCount: infos.length,
+                          itemBuilder: (context, index) {
+                            final companyInfo =
+                                CompanyInfo.fromJson(infos[index]);
+                            return Center(
+                              child: Column(
+                                children: [
+                                  ListTile(
+                                      title: Text('Name : ${companyInfo.name}'),
+                                      titleTextStyle: listTileStyle),
+                                  ListTile(
+                                      title: Text(
+                                          'Founder : ${companyInfo.founder}'),
+                                      titleTextStyle: listTileStyle),
+                                  ListTile(
+                                      title: Text(
+                                          ' Founded : ${companyInfo.founded}'),
+                                      titleTextStyle: listTileStyle),
+                                  const ListTile(
+                                    title: Text(' Links :'),
+                                    titleTextStyle: listTileStyle,
+                                  ),
+                                  ...companyInfo.links.entries.map((link) {
+                                    return ListTile(
+                                      title: Text(link.key),
+                                      trailing: IconButton(
+                                        icon: const Icon(Icons.link),
+                                        onPressed: () async {
+                                          final url = Uri.parse(link.value);
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(url);
+                                            return;
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  })
+                                ],
+                              ),
+                            );
+                          },
+                        )),
           TextButton(
             onPressed: () {
               Navigator.of(context).pushNamed(launcheListRoute);
