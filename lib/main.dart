@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_projects/core/constants/routes.dart';
+import 'package:flutter_projects/config/routes/routes.dart';
 import 'package:flutter_projects/features/company/presentation/bloc/company_info/remote/remote_company_info_bloc.dart';
 import 'package:flutter_projects/features/company/presentation/bloc/company_info/remote/remote_company_info_event.dart';
 import 'package:flutter_projects/features/company/presentation/pages/home/company_info.dart';

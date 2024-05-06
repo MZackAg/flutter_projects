@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_projects/features/company/presentation/bloc/company_info/remote/remote_company_info_bloc.dart';
 import 'package:flutter_projects/features/company/presentation/bloc/company_info/remote/remote_company_info_state.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../../core/constants/routes.dart';
+import '../../../../../config/routes/routes.dart';
 import '../../../../../style/company_info_style.dart';
 
 class CompanyInfo extends StatelessWidget {
